@@ -6,14 +6,20 @@ preProcessDataSet <- function(productsData) {
   preparedData$BestSellersRank <- NULL 
   
   #Dummify factors columns
-  dummy <- dummyVars(" ~ .", data = preparedData)
-  preparedData <- data.frame(predict(dummy, newdata = preparedData))
+  # dummy <- dummyVars(" ~ .", data = preparedData)
+  # preparedData <- data.frame(predict(dummy, newdata = preparedData))
+  
+  #Removing the factors attributes
+  preparedData$ProductType <- NULL
   
   #TODO - Check the correlation matrix and remove the attributes with colinearity
   #TODO - Check the correlation matrix and remove perfect correlation with the Volume
   preparedData$x5StarReviews <- NULL
   preparedData$x1StarReviews <- NULL
   preparedData$x3StarReviews <- NULL
+  
+  #Removing the product ID
+  preparedData$ProductNum <- NULL
   
   #Remove the outliers
   preparedData <- preparedData[ preparedData$Volume < 7000, ]
