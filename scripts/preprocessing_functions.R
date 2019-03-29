@@ -1,6 +1,6 @@
 library(caret)
 
-prepareDataSet <- function(productsData) {
+preProcessDataSet <- function(productsData) {
   preparedData <- productsData
   #Removing the BestSellersRank column (missing values)
   preparedData$BestSellersRank <- NULL 
