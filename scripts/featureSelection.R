@@ -12,6 +12,8 @@ products <- preProcessDataSet(products)
 #Creating the train and test set from the sample
 featureSelset <- createTrainAndTestSets(products, products$Volume, 0.7, 123)
 
+print("#########FEATURE SELECTION PROCESS#########")
+cat("\n")
 if (algorithm == "rf") {
   
   rfGrid <- expand.grid(mtry=c(1,2,3,4,5))
@@ -38,7 +40,7 @@ print(featureSelModel)
 importantVariables <- varImp(featureSelModel)
 cat("\n")
 print("#########Most Important Variables#########")
-print(featureSelModel)
+print(importantVariables)
 
 predictedTest <- predict(featureSelModel, featureSelset$testing)
 assessModel <- postResample(predictedTest, featureSelset$testing$Volume)
