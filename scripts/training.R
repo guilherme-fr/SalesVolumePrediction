@@ -1,8 +1,8 @@
 
 productsLocation <- "datasets/existingproductattributes2017.csv"
-# classifierName = "rf"
+classifierName = "rf"
 # classifierName = "knn"
-classifierName = "svm"
+# classifierName = "svm"
 
 ####Loading data into memory####
 products <- read.csv(productsLocation)
@@ -46,5 +46,6 @@ print( paste("Model saved to file '", classifierName, ".rda'", sep = ""))
 
 predictedTest <- predict(model, list$testing)
 assessModel <- postResample(predictedTest, list$testing$Volume)
+errors <- errorMetrics(predictedTest, list$testing$Volume)
 print("Model test metrics:")
 print(assessModel)
