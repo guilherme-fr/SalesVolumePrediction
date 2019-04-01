@@ -1,6 +1,13 @@
 errorMetrics <- function(predictedValues, actualValues) {
-  absoluteError <- predictedValues - actualValues
-  square_error <- absoluteError * absoluteError
-  relative_error <- abs( absoluteError / actualValues )
-  data.frame(absoluteError, relative_error, square_error)
+  errors <- data.frame()
+  errors$absoluteError <- abs( predictedValues - actualValues )
+  errors$MAE <- mean(errors$absoluteError)
+  
+  errors$relative_error <- abs( absoluteError / actualValues )
+  errors$MRE <- mean(errors$relative_error)
+  
+  errors$square_error <- absoluteError * absoluteError
+  errors$RMSE <- sqrt( mean(errors$square_error) )
+  
+  errors
 }
