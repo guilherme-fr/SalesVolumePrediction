@@ -5,7 +5,7 @@ newProductsFile = "datasets/newproductattributes2017.csv"
 predictionsFile = "datasets/productPredictions.csv"
 existingProductsFile <- "datasets/existingproductattributes2017.csv"
 
-evaluateModel = FALSE
+evaluateModel = TRUE
 
 if (file.exists(modelFile)) {
   load(modelFile)
