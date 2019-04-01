@@ -21,7 +21,11 @@ if (algorithm == "rf") {
   rfGrid <- expand.grid(mtry=c(1:6))
   
   print("Training Random Forest...")
-  featureSelModel <- trainModel(featureSelset$training, Volume~ ., "rf", tuneGrid = rfGrid)
+  featureSelModel <- trainModel(featureSelset$training, 
+                                Volume~ PositiveServiceReview + x4StarReviews 
+                                + Recommendproduct, 
+                                "rf", 
+                                tuneGrid = rfGrid)
   print("Training finished!")
   
 } else if (algorithm == "knn") {
@@ -29,7 +33,13 @@ if (algorithm == "rf") {
   tuneLength <- 10
   preProc = c("center", "scale")
   print("Training K-NN...")
-  featureSelModel <- trainModel(featureSelset$training, Volume~ ., "knn", tuneLength = tuneLength, 
+  featureSelModel <- trainModel(featureSelset$training, 
+                                Volume~ PositiveServiceReview 
+                                + x4StarReviews
+                                + x2StarReviews
+                                + NegativeServiceReview, 
+                                "knn", 
+                                tuneLength = tuneLength, 
                                 preProc = preProc)
   print("Training finished!")
   
@@ -37,7 +47,13 @@ if (algorithm == "rf") {
   tuneLength <- 10
   preProc = c("center", "scale")
   print("Training SVM...")
-  featureSelModel <- trainModel(featureSelset$training, Volume~ ., "svmRadial", tuneLength = tuneLength,
+  featureSelModel <- trainModel(featureSelset$training, 
+                                Volume~ PositiveServiceReview
+                                + x4StarReviews
+                                + x2StarReviews
+                                + NegativeServiceReview, 
+                                "svmRadial", 
+                                tuneLength = tuneLength,
                                 preProc = preProc)
   print("Training finished!")
   
