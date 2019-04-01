@@ -1,5 +1,6 @@
 library(C50)
 library(caret)
+library(kernlab)
 
 createTrainAndTestSets <- function(data, labelColumn, trainPercent, seed) {
   set.seed(seed)
@@ -12,13 +13,14 @@ createTrainAndTestSets <- function(data, labelColumn, trainPercent, seed) {
   list(training = trainingSet, testing = testingSet)
 }
 
-trainModel <- function(trainingData, formula, modelName, tuneLength = NULL, tuneGrid = NULL) {
+trainModel <- function(trainingData, formula, modelName, tuneLength = NULL, tuneGrid = NULL, 
+                       preProc = NULL) {
   ####Defining configuration for training####
   fitControl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
   
   #training
   modelFit <- train(formula, data = trainingData, method = modelName, trControl = fitControl, 
-                    tuneLength = tuneLength, tuneGrid = tuneGrid, importance = TRUE)
+                    tuneLength = tuneLength, tuneGrid = tuneGrid, preProc = preProc, importance = TRUE)
   
   modelFit
 }
