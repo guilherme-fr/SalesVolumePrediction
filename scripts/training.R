@@ -16,8 +16,9 @@ list <- createTrainAndTestSets(products, products$Volume, 0.7, 998)
 if (classifierName == "knn") {
   print("Training K-NN model...")
   
+  preProc <- c("center", "scale")
   #Training K-NN model
-  model <- trainModel(list$training, Volume~ PositiveServiceReview, "knn", 10)
+  model <- trainModel(list$training, Volume~ PositiveServiceReview, "knn", 10, preProc = preProc)
   
   print("Training finished!")
 } else if (classifierName == "rf") {
@@ -34,8 +35,9 @@ if (classifierName == "knn") {
 } else if (classifierName == "svm") {
   print("Training SVM model...")
   
+  preProc <- c("center", "scale")
   #Training SVM model
-  model <- trainModel(list$training, Volume~ PositiveServiceReview, "svmRadial", 10)
+  model <- trainModel(list$training, Volume~ PositiveServiceReview, "svmRadial", 10, preProc = preProc)
   
   print("Training finished!")
 }
