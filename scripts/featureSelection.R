@@ -76,3 +76,22 @@ print("#########Most Important Variables#########")
 print(importantVariables)
 
 errors <- errorMetrics(predictedTest, featureSelset$testing$Volume)
+
+
+
+rankFeatures <- function(dataset, dependentVarName, method, 
+                         percent = 0.75, seed = 123, trainControl, 
+                         tuneLength = NULL, tuneGrid = NULL) {
+  
+  list <- createTrainAndTestSets(dataset, dataset[, dependentVarName], percent, seed)
+  #Formula with all independent variables
+  formula <- formula(paste(dependentVarName, "~ .", sep = ""))
+  
+  #training
+  modelFit <- train(formula, data = list$training, method = method, 
+                    trControl = trainControl, tuneLength = tuneLength, 
+                    tuneGrid = tuneGrid, preProc = preProc, importance = TRUE)
+  
+  rank <- varImp(modelFit)
+  rank
+}

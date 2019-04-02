@@ -12,11 +12,9 @@ preProcessDataSet <- function(productsData) {
   #Removing the factors attributes
   preparedData$ProductType <- NULL
   
-  #TODO - Check the correlation matrix and remove the attributes with colinearity
-  #TODO - Check the correlation matrix and remove perfect correlation with the Volume
-  preparedData$x5StarReviews <- NULL
-  preparedData$x1StarReviews <- NULL
-  preparedData$x3StarReviews <- NULL
+  #Removing attributes with colinearity and perfect correlation with the dependent variable
+  removeCol <- checkColinearity(preparedData, 0.9, 0.999, "Volume")
+  preparedData <- preparedData[ , !(names(preparedData) %in% removeCol)]
   
   #Removing the product ID
   preparedData$ProductNum <- NULL
