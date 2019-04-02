@@ -1,9 +1,9 @@
 
 
 productsLocation <- "datasets/existingproductattributes2017.csv"
-# algorithm = "rf"
+algorithm = "rf"
 # algorithm = "knn"
-algorithm = "svm"
+# algorithm = "svm"
 
 ####Loading data into memory####
 products <- read.csv(productsLocation)
