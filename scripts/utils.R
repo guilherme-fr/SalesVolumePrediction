@@ -16,9 +16,24 @@ errorMetrics <- function(predictedValues, actualValues) {
   errors
 }
 
-runModels <- function(dataset, dependentVarName, featuresName, method,
-                      percent = 0.75, seed = 123, trainControl, 
-                      tuneLength = NULL, tuneGrid = NULL, preProc = NULL) {
+rankFeatures <- function(dataset, dependentVarName, percent = 0.75, seed = 123, ...) {
+  
+  partition <- createTrainAndTestSets(dataset, dataset[, dependentVarName], percent, seed)
+  #Formula with all independent variables
+  formula <- formula(paste(dependentVarName, "~ .", sep = ""))
+  
+  #training
+  modelFit <- train(formula, data = partition$training, importance = TRUE, ...)
+  
+  rank <- varImp(modelFit)
+  featuresRank <- rank[[1]]
+  dfFeaturesRank <- data.frame(variable = row.names(featuresRank), overall = featuresRank[,1])
+  dfFeaturesRank <- dfFeaturesRank[order(-dfFeaturesRank[,2]), ]
+  
+  dfFeaturesRank
+}
+
+runModels <- function(dataset, dependentVarName, featuresName, percent = 0.75, seed = 123, ...) {
   
   partitions <- createTrainAndTestSets(dataset, dataset[, dependentVarName], percent, seed)
   
@@ -27,13 +42,12 @@ runModels <- function(dataset, dependentVarName, featuresName, method,
   i <- 1
   for (formulaStr in formulas) {
     formula <- formula(formulaStr)
-    modelFit <- train(formula, data = partitions$training, method = method, trControl = trainControl, 
-                      tuneLength = tuneLength, tuneGrid = tuneGrid, preProc = preProc)
+    modelFit <- train(formula, data = partitions$training, ...)
     
     testPrediction <- predict(modelFit, partitions$testing)
     testMetrics <- postResample(testPrediction, partitions$testing[ , dependentVarName])
     testErrors <- errorMetrics(testPrediction, partitions$testing[ , dependentVarName])
-    result[[i]] <- list(method = method, formula = formulaStr, modelTrained = modelFit, 
+    result[[i]] <- list(method = method, formula = formulaStr, trainMetrics = modelFit[["results"]], 
          testMetrics = testMetrics, testErrors = testErrors)
     i <- i + 1
   }

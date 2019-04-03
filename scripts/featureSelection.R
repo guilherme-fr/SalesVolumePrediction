@@ -11,6 +11,29 @@ products <- read.csv(productsLocation)
 ####Pre-processing####
 products <- preProcessDataSet(products)
 
+
+
+
+# trainControl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
+# tuneLength <- 5
+# tuneGrid <- NULL
+# preProc <- NULL
+# 
+# features <- rankFeatures(products, "Volume", 0.7, 123,
+#                          method = algorithm,
+#                          trControl = trainControl)
+# 
+# resultList <- runModels(products, "Volume", features[(1:4), 1], 0.7, 123,
+#                         method = algorithm,
+#                         trControl = trainControl,
+#                         tuneLength = tuneLength)
+# 
+
+
+
+
+
+
 #Creating the train and test set from the sample
 featureSelset <- createTrainAndTestSets(products, products$Volume, 0.7, 998)
 
@@ -77,21 +100,3 @@ print(importantVariables)
 
 errors <- errorMetrics(predictedTest, featureSelset$testing$Volume)
 
-
-
-rankFeatures <- function(dataset, dependentVarName, method, 
-                         percent = 0.75, seed = 123, trainControl, 
-                         tuneLength = NULL, tuneGrid = NULL) {
-  
-  list <- createTrainAndTestSets(dataset, dataset[, dependentVarName], percent, seed)
-  #Formula with all independent variables
-  formula <- formula(paste(dependentVarName, "~ .", sep = ""))
-  
-  #training
-  modelFit <- train(formula, data = list$training, method = method, 
-                    trControl = trainControl, tuneLength = tuneLength, 
-                    tuneGrid = tuneGrid, preProc = preProc, importance = TRUE)
-  
-  rank <- varImp(modelFit)
-  rank
-}
